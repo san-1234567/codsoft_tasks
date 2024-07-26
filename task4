@@ -1,0 +1,50 @@
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class QuizApplication {
+    private static final int TIME_LIMIT = 10; // seconds
+    private static int score;
+    private static int questionIndex;
+    private static final String[][] questions = {
+        {"What is the capital of France?", "A: Berlin", "B: Paris", "C: London", "D: Rome", "B"},
+        {"What is the largest planet in our solar system?", "A: Earth", "B: Saturn", "C: Jupiter", "D: Uranus", "C"},
+        // Add more questions here...
+    };
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Timer timer = new Timer();
+
+        for (questionIndex = 0; questionIndex < questions.length; questionIndex++) {
+            System.out.println(questions[questionIndex][0]);
+            for (int i = 1; i < questions[questionIndex].length - 1; i++) {
+                System.out.println(questions[questionIndex][i]);
+            }
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("Time's up!");
+                    System.out.println("Correct answer: " + questions[questionIndex][questions[questionIndex].length - 1]);
+                    System.out.println();
+                }
+            }, TIME_LIMIT * 1000);
+
+            System.out.print("Enter your answer (A, B, C, D): ");
+            String answer = scanner.next().toUpperCase();
+
+            if (answer.equals(questions[questionIndex][questions[questionIndex].length - 1])) {
+                System.out.println("Correct!");
+                score++;
+            } else {
+                System.out.println("Sorry, the correct answer is " + questions[questionIndex][questions[questionIndex].length - 1] + ".");
+            }
+
+            System.out.println();
+        }
+
+        System.out.println("Quiz finished! Your score is " + score + " out of " + questions.length + ".");
+    }
+}
+
