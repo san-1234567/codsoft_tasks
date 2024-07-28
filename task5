@@ -1,0 +1,110 @@
+import java.util.*;
+
+class Course {
+    String code, title, description;
+    int capacity, availableSlots;
+    String schedule;
+
+    public Course(String code, String title, String description, int capacity, String schedule) {
+        this.code = code;
+        this.title = title;
+        this.description = description;
+        this.capacity = capacity;
+        this.availableSlots = capacity;
+        this.schedule = schedule;
+    }
+}
+
+class Student {
+    String id, name;
+    List<String> registeredCourses;
+
+    public Student(String id, String name) {
+        (link unavailable) = id;
+        this.name = name;
+        this.registeredCourses = new ArrayList<>();
+    }
+}
+
+public class CourseRegistrationSystem {
+    Map<String, Course> courseDatabase;
+    Map<String, Student> studentDatabase;
+
+    public CourseRegistrationSystem() {
+        this.courseDatabase = new HashMap<>();
+        this.studentDatabase = new HashMap<>();
+    }
+
+    // Add course to course database
+    public void addCourse(Course course) {
+        courseDatabase.put(course.code, course);
+    }
+
+    // Add student to student database
+    public void addStudent(Student student) {
+        studentDatabase.put((link unavailable), student);
+    }
+
+    // Display available courses
+    public void displayCourses() {
+        for (Course course : courseDatabase.values()) {
+            System.out.println("Code: " + course.code + ", Title: " + course.title + ", Available Slots: " + course.availableSlots);
+        }
+    }
+
+    // Register student for a course
+    public void registerStudentForCourse(String studentId, String courseCode) {
+        if (studentDatabase.containsKey(studentId) && courseDatabase.containsKey(courseCode)) {
+            Student student = studentDatabase.get(studentId);
+            Course course = courseDatabase.get(courseCode);
+            if (course.availableSlots > 0 && !student.registeredCourses.contains(courseCode)) {
+                student.registeredCourses.add(courseCode);
+                course.availableSlots--;
+                System.out.println("Student " + studentId + " registered for course " + courseCode);
+            } else {
+                System.out.println("Course is full or student already registered");
+            }
+        } else {
+            System.out.println("Student or course not found");
+        }
+    }
+
+    // Remove student from a course
+    public void removeStudentFromCourse(String studentId, String courseCode) {
+        if (studentDatabase.containsKey(studentId) && courseDatabase.containsKey(courseCode)) {
+            Student student = studentDatabase.get(studentId);
+            Course course = courseDatabase.get(courseCode);
+            if (student.registeredCourses.contains(courseCode)) {
+                student.registeredCourses.remove(courseCode);
+                course.availableSlots++;
+                System.out.println("Student " + studentId + " removed from course " + courseCode);
+            } else {
+                System.out.println("Student not registered for course");
+            }
+        } else {
+            System.out.println("Student or course not found");
+        }
+    }
+
+    public static void main(String[] args) {
+        CourseRegistrationSystem crs = new CourseRegistrationSystem();
+
+        // Add courses
+        crs.addCourse(new Course("CSE101", "Introduction to Computer Science", "Basic concepts of computer science", 30, "Monday, Wednesday, Friday"));
+        crs.addCourse(new Course("CSE102", "Data Structures", "Data structures and algorithms", 25, "Tuesday, Thursday"));
+
+        // Add students
+        crs.addStudent(new Student("S101", "John Doe"));
+        crs.addStudent(new Student("S102", "Jane Doe"));
+
+        // Display courses
+        crs.displayCourses();
+
+        // Register students for courses
+        crs.registerStudentForCourse("S101", "CSE101");
+        crs.registerStudentForCourse("S102", "CSE102");
+
+        // Remove student from course
+        crs.removeStudentFromCourse("S101", "CSE101");
+    }
+}
